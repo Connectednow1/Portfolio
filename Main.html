@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connected — Roblox Scripter</title>
+
+<!--
+  ════════════════════════════════════════════════════════════════════════
+  PORTFOLIO — Connected (ConnectedNow on Roblox) | Roblox Scripter
+  ════════════════════════════════════════════════════════════════════════
+
+  QUICK EDIT GUIDE — search these labels to jump to what you need:
+
+  [EDIT: NAME]         → Your display name / branding text
+  [EDIT: DISCORD]      → Your Discord username
+  [EDIT: ROBLOX]       → Your Roblox profile link
+  [EDIT: BANNER]       → The top banner image URL
+  [EDIT: AVATAR]       → Your avatar image URL
+  [EDIT: STATS]        → Hero section numbers
+  [EDIT: ABOUT TEXT]   → The bio paragraphs
+  [EDIT: SKILLS]       → Strengths and weaknesses lists
+  [EDIT: GAME CARD]    → Each game entry
+  [EDIT: STUDIO CARD]  → Each studio entry
+  [EDIT: VIDEO CARD]   → Each video — set data-src="your-video.mp4"
+  [EDIT: SCREENSHOT]   → Code screenshots — set src="your-image.png"
+  [EDIT: RATES]        → Commission pricing rows
+  [EDIT: AVAILABILITY] → Work hours rows
+  [EDIT: NOTICES]      → Payment / policy notices
+  [EDIT: COLORS]       → CSS variables in :root {}
+  [EDIT: FONTS]        → Google Fonts @import + --font-* variables
+  ════════════════════════════════════════════════════════════════════════
+-->
+
+<!-- [EDIT: FONTS] Change names here AND in :root variables -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.google.com/specimen/Montserrat" rel="stylesheet">
+
+<style>
+
+/* ══════════════════════════════════════════════════════════════════
+   RESET
+   ══════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+::selection { background: var(--accent); color: #fff; }
+img { max-width: 100%; display: block; }
+
+/* ══════════════════════════════════════════════════════════════════
+   [EDIT: COLORS] — every colour is a variable; change here = everywhere
+   ══════════════════════════════════════════════════════════════════ */
+:root {
+  --bg:      #0b0b10;
+  --bg2:     #0f101a;
+  --bg3:     #141520;
+  --panel:   rgba(255,255,255,0.04);
+  --border:  rgba(255,255,255,0.09);
+
+  --accent:  #4f8ef7;   /* main blue — swap this to change the whole vibe */
+  --gold:    #e8b84b;   /* secondary warm accent */
+  --red:     #f06070;   /* warnings / weaknesses */
+  --green:   #34d399;   /* online dot */
+
+  --white:   #eef0fa;
+  --muted:   #64748b;
+
+  --glow-a:  rgba(79,142,247,0.22);
+
+  /* [EDIT: FONTS] */
+  --font-logo: 'Orbitron', monospace;
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'Outfit', sans-serif;
+
+  --nav-h: 68px;
+  --r: 12px;
+  --max: 1180px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   UTILS
+   ══════════════════════════════════════════════════════════════════ */
+.container { max-width: var(--max); margin: 0 auto; padding: 0 2rem; }
+section { position: relative; z-index: 1; padding: 110px 0; }
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+}
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-head);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.1rem;
+}
+.section-label::before {
+  content: '';
+  display: block;
+  width: 26px; height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+h2.section-title {
+  font-family: var(--font-head);
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--white);
+  margin-bottom: 0.9rem;
+}
+h2.section-title em { font-style: normal; color: var(--accent); }
+
+.section-desc {
+  max-width: 560px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 3.5rem;
+  line-height: 1.65;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.75rem 1.9rem;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: box-shadow .25s, transform .15s, background .2s;
+}
+.btn-primary:hover { background:#5c9bff; box-shadow:0 8px 30px var(--glow-a); transform:translateY(-2px); }
+
+.btn-ghost {
+  display: inline-block;
+  padding: 0.75rem 1.9rem;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-head);
+  font-weight: 600;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  transition: border-color .2s, transform .15s;
+}
+.btn-ghost:hover { border-color: var(--white); transform:translateY(-2px); }
+
+.tag {
+  padding: .3rem .85rem;
+  background: rgba(79,142,247,.09);
+  border: 1px solid rgba(79,142,247,.22);
+  border-radius: 999px;
+  font-family: var(--font-head);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--accent);
+}
+.tag.gold    { background:rgba(232,184,75,.08); border-color:rgba(232,184,75,.22); color:var(--gold); }
+.tag.neutral { background:var(--panel); border-color:var(--border); color:var(--muted); }
+
+/* scroll progress */
+#scroll-bar {
+  position: fixed; top:0; left:0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  z-index: 9000; width: 0%;
+  box-shadow: 0 0 8px var(--glow-a);
+  transition: width .08s linear;
+}
+
+/* particles */
+#particle-canvas {
+  position: fixed; top:0; left:0;
+  width:100%; height:100%;
+  pointer-events:none; z-index:0; opacity:.35;
+}
+
+/* ── reveal on scroll ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(34px);
+  transition: opacity .75s cubic-bezier(.22,1,.36,1), transform .75s cubic-bezier(.22,1,.36,1);
+}
+.reveal.from-left  { transform: translateX(-34px); }
+.reveal.from-right { transform: translateX(34px); }
+.reveal.visible    { opacity:1; transform:none; }
+
+.stagger > * {
+  opacity:0; transform:translateY(26px);
+  transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1);
+}
+.stagger.visible > *:nth-child(1)  { opacity:1; transform:none; transition-delay:.05s; }
+.stagger.visible > *:nth-child(2)  { opacity:1; transform:none; transition-delay:.11s; }
+.stagger.visible > *:nth-child(3)  { opacity:1; transform:none; transition-delay:.17s; }
+.stagger.visible > *:nth-child(4)  { opacity:1; transform:none; transition-delay:.23s; }
+.stagger.visible > *:nth-child(5)  { opacity:1; transform:none; transition-delay:.29s; }
+.stagger.visible > *:nth-child(6)  { opacity:1; transform:none; transition-delay:.35s; }
+.stagger.visible > *:nth-child(7)  { opacity:1; transform:none; transition-delay:.41s; }
+.stagger.visible > *:nth-child(8)  { opacity:1; transform:none; transition-delay:.47s; }
+.stagger.visible > *:nth-child(n+9){ opacity:1; transform:none; transition-delay:.52s; }
+
+/* ══════════════════════════════════════════════════════════════════
+   NAV
+   ══════════════════════════════════════════════════════════════════ */
+nav {
+  position: fixed; top:0; left:0; right:0;
+  height: var(--nav-h);
+  z-index: 1000;
+  display: flex; align-items: center;
+  padding: 0 2.5rem;
+  transition: background .4s, box-shadow .4s;
+}
+nav.scrolled {
+  background: rgba(11,11,16,.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 var(--border);
+}
+
+/* [EDIT: NAME] */
+.nav-logo {
+  font-family: var(--font-logo);
+  font-size: 1rem; font-weight: 900;
+  letter-spacing: .1em;
+  color: var(--white);
+  text-decoration: none;
+  margin-right: auto; flex-shrink: 0;
+}
+.nav-logo span { color: var(--accent); }
+
+.nav-links { display:flex; gap:.2rem; list-style:none; }
+.nav-links a {
+  display: block;
+  padding: .45rem .9rem;
+  font-family: var(--font-head);
+  font-size: .72rem; letter-spacing: .08em; text-transform: uppercase;
+  text-decoration: none; color: var(--muted);
+  border-radius: 6px; position:relative;
+  transition: color .2s;
+}
+.nav-links a::after {
+  content:''; position:absolute; bottom:3px; left:50%; right:50%;
+  height:1.5px; background:var(--accent); border-radius:2px;
+  transition: left .25s, right .25s;
+}
+.nav-links a:hover        { color:var(--white); }
+.nav-links a:hover::after { left:12%; right:12%; }
+.nav-links a.active       { color:var(--accent); }
+
+/* Mobile burger */
+.nav-burger {
+  display:none; flex-direction:column; gap:5px;
+  background:none; border:none; padding:4px; cursor:pointer; margin-left:1rem;
+}
+.nav-burger span {
+  display:block; width:24px; height:2px;
+  background:var(--white); border-radius:2px;
+  transition: transform .3s, opacity .3s;
+}
+.nav-burger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2){ opacity:0; }
+.nav-burger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+/* Mobile menu panel */
+.mobile-menu {
+  display:none; position:fixed;
+  top:var(--nav-h); left:0; right:0;
+  background:rgba(11,11,16,.97);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  z-index:999; padding:1.5rem 2rem 2rem;
+  flex-direction:column; gap:.3rem;
+}
+.mobile-menu.open { display:flex; }
+.mobile-menu a {
+  display:block; padding:.7rem .5rem;
+  font-family:var(--font-head); font-size:.88rem; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); text-decoration:none;
+  border-bottom:1px solid var(--border);
+  transition:color .2s;
+}
+.mobile-menu a:hover, .mobile-menu a.active { color:var(--accent); }
+
+/* ══════════════════════════════════════════════════════════════════
+   HERO
+   ══════════════════════════════════════════════════════════════════ */
+#hero { min-height:100vh; display:flex; flex-direction:column; padding:0; overflow:hidden; }
+
+/* [EDIT: BANNER] */
+.hero-banner {
+  position: relative; width: 100%;
+  height: 330px; min-height: 200px; max-height: 330px;
+  flex-shrink: 0; overflow: hidden; background: var(--bg3);
+  display: flex; justify-content: center;
+}
+.hero-banner img {
+  width: 70%;        /* ← change this to control width */
+  height: 100%;
+  margin-top: 50px;
+  object-fit: cover; object-position: center center;
+  filter: brightness(.78);
+  flex-shrink: 0;
+}
+.hero-banner-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(11,11,16,.15), rgba(11,11,16,1));
+}
+.hero-content {
+  flex:1; display:flex; align-items:center;
+  max-width:var(--max); width:100%;
+  margin:-72px auto 0;
+  padding:0 2rem 4rem;
+  position:relative; z-index:2;
+}
+.hero-left { max-width:680px; }
+
+.hero-status {
+  display:inline-flex; align-items:center; gap:.55rem;
+  font-family:var(--font-head); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--muted); padding:.4rem 1rem;
+  border:1px solid var(--border); border-radius:999px;
+  background:rgba(11,11,16,.7); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  margin-bottom:1.5rem;
+}
+.status-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--green); box-shadow:0 0 8px var(--green);
+  animation:pulse-dot 2.2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100%{ opacity:1; box-shadow:0 0 8px var(--green); }
+  50%    { opacity:.55; box-shadow:0 0 16px var(--green); }
+}
+
+/* [EDIT: NAME] */
+.hero-name {
+  font-family:var(--font-head); font-weight:800; line-height:.97;
+  font-size:clamp(3rem,8vw,6rem); letter-spacing:-.025em; margin-bottom:.9rem;
+}
+.hero-name .line1 { display:block; color:var(--white); }
+.hero-name .line2 {
+  display:block;
+  background:linear-gradient(125deg,var(--accent),var(--gold));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+
+.hero-role {
+  font-family:var(--font-head); font-size:clamp(.85rem,2vw,1rem);
+  font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:1.2rem;
+}
+.hero-tagline {
+  font-size:clamp(1rem,2vw,1.12rem); color:rgba(238,240,250,.7);
+  margin-bottom:2.5rem; max-width:500px; line-height:1.6;
+}
+.hero-tagline strong { color:var(--white); font-weight:600; }
+
+.hero-btns { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:3.5rem; }
+
+/* [EDIT: STATS] */
+.hero-stats { display:flex; gap:2.5rem; flex-wrap:wrap; }
+.hero-stat-val {
+  font-family:var(--font-logo); font-size:2rem; font-weight:900;
+  color:var(--accent); display:block; line-height:1.1;
+}
+.hero-stat-lab {
+  font-family:var(--font-head); font-size:.7rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); display:block; margin-top:.15rem;
+}
+
+.scroll-hint {
+  position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  font-family:var(--font-head); font-size:.58rem; letter-spacing:.25em; text-transform:uppercase;
+  color:var(--muted); animation:bob 2.8s ease-in-out infinite; z-index:2;
+}
+.scroll-hint::after {
+  content:''; width:1px; height:36px;
+  background:linear-gradient(to bottom,var(--accent),transparent); display:block;
+}
+@keyframes bob {
+  0%,100%{ transform:translateX(-50%) translateY(0); }
+  50%    { transform:translateX(-50%) translateY(8px); }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ABOUT
+   ══════════════════════════════════════════════════════════════════ */
+#about { background:var(--bg); }
+
+.about-grid { display:grid; grid-template-columns:340px 1fr; gap:4.5rem; align-items:start; }
+
+.about-card-wrap { position:relative; }
+.about-card-wrap::before {
+  content:''; position:absolute; inset:-1px;
+  border-radius:calc(var(--r) + 1px);
+  background:linear-gradient(135deg,var(--accent),var(--gold),transparent 70%);
+  opacity:.5;
+}
+.about-card {
+  position:relative; background:var(--bg2);
+  border-radius:var(--r); padding:2.2rem; overflow:hidden;
+}
+
+/* [EDIT: AVATAR] — replace <span>AVATAR</span> with an <img> tag */
+.about-avatar {
+  width:110px; height:110px; border-radius:50%;
+  background:var(--bg3); border:2px solid var(--border);
+  overflow:hidden; margin-bottom:1.4rem;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-head); font-size:.6rem; letter-spacing:.12em; color:var(--muted);
+}
+.about-avatar img { width:100%; height:100%; object-fit:cover; }
+
+.about-card-name { font-family:var(--font-head); font-size:1.25rem; font-weight:800; color:var(--white); margin-bottom:.2rem; }
+.about-card-role { font-family:var(--font-head); font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:1.4rem; display:block; }
+.about-tags { display:flex; flex-wrap:wrap; gap:.5rem; }
+
+/* [EDIT: ABOUT TEXT] */
+.about-body p { color:rgba(238,240,250,.72); font-size:.95rem; margin-bottom:1.1rem; line-height:1.7; }
+.about-body strong { color:var(--white); font-weight:600; }
+
+.about-highlights { margin-top:2rem; display:flex; flex-direction:column; gap:.6rem; }
+.about-hl {
+  display:flex; align-items:center; gap:.75rem;
+  font-size:.87rem; color:rgba(238,240,250,.8);
+  padding:.6rem .9rem;
+  background:var(--panel); border:1px solid var(--border); border-radius:8px;
+  transition:border-color .2s,background .2s,transform .2s;
+}
+.about-hl:hover { border-color:rgba(79,142,247,.25); background:rgba(79,142,247,.05); transform:translateX(4px); }
+.about-hl .hl-icon { font-size:1rem; flex-shrink:0; }
+.about-hl strong { color:var(--white); }
+
+/* ══════════════════════════════════════════════════════════════════
+   SKILLS
+   ══════════════════════════════════════════════════════════════════ */
+#skills { background:var(--bg2); }
+
+.skills-layout { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+
+.skills-panel { background:var(--bg); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; }
+.skills-panel-head {
+  padding:1.4rem 1.8rem; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:.75rem;
+}
+.skills-panel-head .ph-icon { font-size:1.2rem; }
+.skills-panel-head h3 { font-family:var(--font-head); font-size:.88rem; font-weight:800; color:var(--white); margin-bottom:.1rem; }
+.skills-panel-head p  { font-size:.78rem; color:var(--muted); }
+.skills-panel-head.str { border-left:3px solid var(--accent); }
+.skills-panel-head.wk  { border-left:3px solid var(--red); }
+
+/* [EDIT: SKILLS] */
+.skills-list { list-style:none; padding:.5rem 0; }
+.skills-list li {
+  display:flex; align-items:flex-start; gap:.75rem;
+  padding:.7rem 1.8rem; border-bottom:1px solid var(--border);
+  font-size:.87rem; color:rgba(238,240,250,.8);
+  transition:background .15s; line-height:1.45;
+}
+.skills-list li:last-child { border-bottom:none; }
+.skills-list li:hover { background:var(--panel); }
+.skills-list .s-dot { width:6px; height:6px; border-radius:50%; margin-top:.45rem; flex-shrink:0; }
+.skills-list.strengths  .s-dot { background:var(--accent); box-shadow:0 0 6px var(--glow-a); }
+.skills-list.weaknesses .s-dot { background:var(--red); }
+
+.skills-weak-note {
+  padding:1rem 1.8rem; background:rgba(240,96,112,.05);
+  border-top:1px solid var(--border);
+  font-size:.8rem; color:var(--muted); line-height:1.5;
+}
+.skills-weak-note strong { color:var(--white); }
+
+/* ══════════════════════════════════════════════════════════════════
+   GAMES
+   ══════════════════════════════════════════════════════════════════ */
+#games { background:var(--bg); }
+
+.games-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:1.5rem; }
+
+/* [EDIT: GAME CARD] */
+.game-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s,border-color .3s;
+  position:relative;
+}
+.game-card:hover {
+  transform:translateY(-7px) scale(1.005);
+  box-shadow:0 20px 50px rgba(0,0,0,.45),0 0 0 1px rgba(79,142,247,.2);
+  border-color:rgba(79,142,247,.2);
+}
+.game-thumb {
+  aspect-ratio:16/9; background:var(--bg3);
+  position:relative; overflow:hidden;
+}
+.game-thumb img { width:100%; height:100%; object-fit:cover; transition:transform .5s; filter:brightness(.82); }
+.game-card:hover .game-thumb img { transform:scale(1.06); }
+.game-thumb-ph {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.5rem;
+  background:linear-gradient(135deg,#0e1628,#12192e);
+}
+.game-thumb-ph .ph-emoji { font-size:2rem; opacity:.5; }
+.game-thumb-ph .ph-label { font-family:var(--font-head); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.18); }
+
+.game-role-badge {
+  position:absolute; top:.75rem; left:.75rem;
+  font-family:var(--font-head); font-size:.58rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  padding:.25rem .65rem; border-radius:4px;
+  background:rgba(79,142,247,.2); border:1px solid rgba(79,142,247,.35); color:var(--accent);
+  backdrop-filter:blur(6px);
+}
+.game-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top,rgba(11,11,16,.95),transparent 55%);
+  opacity:0; transition:opacity .3s;
+  display:flex; align-items:flex-end; justify-content:center; padding-bottom:1.1rem;
+}
+.game-card:hover .game-overlay { opacity:1; }
+.game-link-btn {
+  font-family:var(--font-head); font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent); border:1.5px solid var(--accent); padding:.38rem 1.1rem;
+  border-radius:6px; text-decoration:none; transition:background .2s,color .2s;
+}
+.game-link-btn:hover { background:var(--accent); color:#fff; }
+
+.game-info { padding:1.3rem 1.4rem 1.4rem; }
+.game-info h3 { font-family:var(--font-head); font-size:1rem; font-weight:800; color:var(--white); margin-bottom:.4rem; }
+.game-info p  { font-size:.84rem; color:var(--muted); line-height:1.55; margin-bottom:1rem; }
+.game-meta { display:flex; gap:1.2rem; flex-wrap:wrap; padding-top:.9rem; border-top:1px solid var(--border); }
+.game-meta-item { font-family:var(--font-head); font-size:.73rem; color:var(--muted); display:flex; align-items:center; gap:.3rem; }
+.game-meta-item span { color:var(--white); font-weight:600; }
+
+/* ══════════════════════════════════════════════════════════════════
+   STUDIOS
+   ══════════════════════════════════════════════════════════════════ */
+#studios { background:var(--bg2); }
+.studios-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; }
+
+/* [EDIT: STUDIO CARD] */
+.studio-card {
+  background:var(--bg); border:1px solid var(--border); border-radius:var(--r);
+  padding:1.8rem 2rem; display:flex; flex-direction:column; gap:.6rem;
+  text-decoration:none; position:relative; overflow:hidden;
+  transition:border-color .25s,background .25s,transform .25s;
+}
+.studio-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--gold)); opacity:0; transition:opacity .25s;
+}
+.studio-card:hover { border-color:rgba(79,142,247,.25); background:rgba(79,142,247,.04); transform:translateY(-4px); }
+.studio-card:hover::before { opacity:1; }
+
+.studio-logo {
+  width:52px; height:52px; border-radius:10px;
+  background:var(--bg3); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:.4rem;
+}
+.studio-name { font-family:var(--font-head); font-size:1.05rem; font-weight:800; color:var(--white); }
+.studio-role { font-family:var(--font-head); font-size:.68rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); }
+.studio-desc { font-size:.84rem; color:var(--muted); line-height:1.55; flex:1; }
+.studio-link-label {
+  font-family:var(--font-head); font-size:.7rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--accent); display:flex; align-items:center; gap:.4rem; margin-top:.5rem;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   VIDEOS  —  Custom HTML5 player
+   ══════════════════════════════════════════════════════════════════
+
+   HOW TO ADD VIDEOS:
+   1. On .video-card set: data-src="path/to/video.mp4"
+   2. Set data-title and data-cat (commission|system|ui|combat)
+   3. Optionally add <img src="thumb.jpg"> inside .video-thumb
+   ══════════════════════════════════════════════════════════════════ */
+#videos { background:var(--bg); }
+
+.video-filters { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:2.5rem; }
+.vf-btn {
+  padding:.42rem 1.1rem; background:transparent;
+  border:1.5px solid var(--border); border-radius:999px;
+  font-family:var(--font-head); font-size:.72rem; font-weight:600; letter-spacing:.08em;
+  color:var(--muted); cursor:pointer; transition:border-color .2s,color .2s,background .2s;
+}
+.vf-btn:hover,.vf-btn.active { border-color:var(--accent); color:var(--accent); background:rgba(79,142,247,.07); }
+
+.videos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; }
+
+/* [EDIT: VIDEO CARD] */
+.video-card {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden; cursor:pointer;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
+}
+.video-card:hover { transform:translateY(-5px); box-shadow:0 18px 45px rgba(0,0,0,.4),0 0 0 1px rgba(232,184,75,.15); }
+
+.video-thumb {
+  aspect-ratio:16/9; background:var(--bg3);
+  position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.video-thumb img { width:100%; height:100%; object-fit:cover; position:absolute; inset:0; }
+.video-thumb-ph {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,#0d1526,#131d35); gap:.5rem;
+}
+.video-thumb-ph .ph-emoji { font-size:1.8rem; opacity:.4; }
+.video-thumb-ph .ph-label { font-family:var(--font-head); font-size:.58rem; letter-spacing:.2em; color:rgba(255,255,255,.2); }
+
+.video-thumb-overlay {
+  position:absolute; inset:0; background:rgba(11,11,16,0); transition:background .3s;
+}
+.video-card:hover .video-thumb-overlay { background:rgba(11,11,16,.25); }
+
+.video-play-ring {
+  position:absolute; width:56px; height:56px;
+  border:2px solid rgba(255,255,255,.75); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.4); backdrop-filter:blur(4px);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),background .2s,border-color .2s; z-index:2;
+}
+.video-card:hover .video-play-ring { transform:scale(1.12); background:var(--accent); border-color:var(--accent); }
+.video-play-ring svg { fill:white; width:18px; margin-left:3px; }
+
+.video-info { padding:1.1rem 1.3rem 1.3rem; }
+.video-cat { font-family:var(--font-head); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:.35rem; }
+.video-info h3 { font-family:var(--font-head); font-size:.93rem; font-weight:700; color:var(--white); margin-bottom:.3rem; }
+.video-info p  { font-size:.81rem; color:var(--muted); line-height:1.5; }
+
+/* VIDEO MODAL */
+.video-modal {
+  display:none; position:fixed; inset:0; z-index:9000;
+  background:rgba(7,7,12,.93); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  align-items:center; justify-content:center; padding:1.5rem;
+}
+.video-modal.open { display:flex; animation:modal-in .2s ease; }
+@keyframes modal-in { from{opacity:0} to{opacity:1} }
+
+.video-modal-inner {
+  position:relative; width:100%; max-width:960px;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
+  animation:modal-up .3s cubic-bezier(.22,1,.36,1);
+}
+@keyframes modal-up { from{transform:translateY(24px) scale(.97);opacity:0} to{transform:none;opacity:1} }
+
+.video-modal-bar {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.9rem 1.3rem; border-bottom:1px solid var(--border);
+}
+.video-modal-title { font-family:var(--font-head); font-size:.85rem; font-weight:700; color:var(--white); }
+.video-modal-close {
+  background:var(--panel); border:1px solid var(--border); color:var(--muted);
+  border-radius:6px; width:32px; height:32px;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:1rem; transition:background .2s,color .2s;
+}
+.video-modal-close:hover { background:var(--red); color:#fff; border-color:var(--red); }
+
+.video-modal-player { background:#000; aspect-ratio:16/9; width:100%; position:relative; }
+.video-modal-player video { width:100%; height:100%; display:block; object-fit:contain; }
+.video-no-src {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.75rem;
+  color:var(--muted); font-size:.85rem; font-family:var(--font-head); letter-spacing:.05em;
+  background:#0a0a10;
+}
+.video-no-src .no-src-icon { font-size:2.5rem; opacity:.4; }
+
+/* ══════════════════════════════════════════════════════════════════
+   CODE SCREENSHOTS + LIGHTBOX
+   ══════════════════════════════════════════════════════════════════
+
+   HOW TO ADD SCREENSHOTS:
+   1. Find <img class="screenshot-img" src="" ...> in a .screenshot-item
+   2. Set src="screenshots/your-file.png"
+   3. If no src, the placeholder is shown automatically
+   4. Clicking opens a full-screen lightbox
+   ══════════════════════════════════════════════════════════════════ */
+#codescreenshots { background:var(--bg2); }
+.screenshots-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.2rem; }
+
+/* [EDIT: SCREENSHOT] */
+.screenshot-item {
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden; cursor:zoom-in;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),border-color .25s,box-shadow .25s; position:relative;
+}
+.screenshot-item:hover { transform:translateY(-4px); border-color:rgba(79,142,247,.25); box-shadow:0 14px 35px rgba(0,0,0,.35); }
+
+.screenshot-item img.screenshot-img {
+  width:100%; height:220px; object-fit:cover; object-position:top left;
+  display:block; transition:transform .4s; filter:brightness(.9);
+}
+.screenshot-item:hover img.screenshot-img { transform:scale(1.03); filter:brightness(1); }
+
+.screenshot-ph {
+  width:100%; height:220px;
+  background:linear-gradient(135deg,#0e1220,#111926);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem;
+}
+.screenshot-ph .ph-icon { font-size:2rem; opacity:.35; }
+.screenshot-ph .ph-text { font-family:var(--font-head); font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.18); }
+
+.screenshot-overlay {
+  position:absolute; inset:0;
+  background:rgba(11,11,16,0);
+  display:flex; align-items:center; justify-content:center;
+  transition:background .25s;
+}
+.screenshot-item:hover .screenshot-overlay { background:rgba(11,11,16,.4); }
+.screenshot-zoom-icon { font-size:1.5rem; opacity:0; transform:scale(.7); transition:opacity .25s,transform .3s cubic-bezier(.34,1.56,.64,1); }
+.screenshot-item:hover .screenshot-zoom-icon { opacity:1; transform:scale(1); }
+.screenshot-caption { padding:.8rem 1rem; font-family:var(--font-head); font-size:.78rem; font-weight:600; color:var(--muted); }
+
+/* Lightbox */
+.img-lightbox {
+  display:none; position:fixed; inset:0; z-index:9100;
+  background:rgba(7,7,12,.96); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  align-items:center; justify-content:center; padding:1.5rem;
+}
+.img-lightbox.open { display:flex; animation:modal-in .2s ease; }
+.img-lightbox img {
+  max-width:100%; max-height:90vh; border-radius:var(--r);
+  box-shadow:0 30px 80px rgba(0,0,0,.7); object-fit:contain;
+  animation:modal-up .3s cubic-bezier(.22,1,.36,1);
+}
+.img-lightbox-close {
+  position:absolute; top:1.5rem; right:1.5rem;
+  background:var(--bg2); border:1px solid var(--border); color:var(--white);
+  border-radius:8px; width:40px; height:40px;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.1rem;
+  transition:background .2s,border-color .2s;
+}
+.img-lightbox-close:hover { background:var(--red); border-color:var(--red); }
+
+/* ══════════════════════════════════════════════════════════════════
+   SERVICES — rates, availability, notices
+   ══════════════════════════════════════════════════════════════════ */
+#services { background:var(--bg); }
+.services-layout { display:grid; grid-template-columns:1fr 355px; gap:4rem; align-items:start; }
+
+/* Rates panel */
+.rates-panel {
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden;
+  position:sticky; top:calc(var(--nav-h) + 2rem);
+}
+.rates-panel-head {
+  padding:1.4rem 1.7rem 1.2rem; border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,rgba(79,142,247,.06),transparent);
+}
+.rates-panel-head h3 { font-family:var(--font-head); font-size:.9rem; font-weight:800; color:var(--white); margin-bottom:.2rem; }
+.rates-panel-head p  { font-size:.78rem; color:var(--muted); }
+
+/* [EDIT: RATES] */
+.rate-row {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1rem 1.7rem; border-bottom:1px solid var(--border); gap:1rem;
+  transition:background .15s;
+}
+.rate-row:last-of-type { border-bottom:none; }
+.rate-row:hover { background:var(--panel); }
+.rate-row.full-game { background:rgba(232,184,75,.03); }
+.rate-name { font-family:var(--font-head); font-size:.87rem; font-weight:700; color:var(--white); margin-bottom:.12rem; }
+.rate-note { font-size:.75rem; color:var(--muted); line-height:1.4; }
+.rate-price { text-align:right; flex-shrink:0; }
+.rate-price .p-main   { font-family:var(--font-head); font-size:.88rem; font-weight:700; color:var(--gold); display:block; white-space:nowrap; }
+.rate-price .p-robux  { font-size:.7rem; color:var(--muted); white-space:nowrap; display:block; margin-top:.1rem; }
+
+.rare-note {
+  padding:.9rem 1.7rem; background:rgba(232,184,75,.05);
+  border-top:1px solid rgba(232,184,75,.14);
+  font-size:.78rem; color:var(--muted); line-height:1.5;
+  display:flex; gap:.6rem; align-items:flex-start;
+}
+.rare-note strong { color:var(--gold); }
+
+.rates-footer {
+  padding:.9rem 1.7rem; border-top:1px solid var(--border);
+  font-size:.77rem; color:var(--muted); line-height:1.5;
+}
+.rates-footer strong { color:var(--white); }
+
+/* Availability */
+.services-sub { font-family:var(--font-head); font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:1rem; }
+
+/* [EDIT: AVAILABILITY] */
+.hours-table { border:1px solid var(--border); border-radius:var(--r); overflow:hidden; margin-bottom:.5rem; }
+.hours-row {
+  display:grid; grid-template-columns:130px 1fr;
+  align-items:center; padding:.7rem 1.3rem; border-bottom:1px solid var(--border); gap:1rem;
+  transition:background .15s;
+}
+.hours-row:last-child { border-bottom:none; }
+.hours-row:hover { background:var(--panel); }
+.hours-row.open { border-left:2px solid var(--accent); }
+.hours-day  { font-family:var(--font-head); font-size:.78rem; font-weight:600; color:var(--muted); letter-spacing:.06em; }
+.hours-time { font-family:var(--font-head); font-size:.8rem; font-weight:700; color:var(--white); }
+.hours-tz   { font-size:.78rem; color:var(--muted); margin-bottom:2rem; line-height:1.5; }
+
+/* Notices */
+/* [EDIT: NOTICES] */
+.notice-list { display:flex; flex-direction:column; gap:.75rem; }
+.notice {
+  display:flex; align-items:flex-start; gap:.9rem;
+  background:var(--panel); border:1px solid var(--border);
+  border-radius:8px; padding:1rem 1.2rem;
+}
+.notice.accent { border-left:3px solid var(--accent); }
+.notice.warn   { border-left:3px solid var(--gold); }
+.notice.danger { border-left:3px solid var(--red); }
+.notice-icon { font-size:1rem; flex-shrink:0; margin-top:.1rem; }
+.notice-text { font-size:.84rem; color:rgba(238,240,250,.78); line-height:1.55; }
+.notice-text strong { color:var(--white); }
+
+/* ══════════════════════════════════════════════════════════════════
+   AI USAGE
+   ══════════════════════════════════════════════════════════════════ */
+#ai { background:var(--bg2); }
+.ai-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+
+.ai-card { background:var(--bg); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; transition:border-color .3s; }
+.ai-card.pos:hover { border-color:rgba(79,142,247,.25); }
+.ai-card.neg:hover { border-color:rgba(240,96,112,.25); }
+
+.ai-card-head {
+  padding:1.5rem 1.8rem 1.2rem; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:.75rem;
+}
+.ai-card-head .head-icon { font-size:1.3rem; }
+.ai-card-head h3 { font-family:var(--font-head); font-size:.88rem; font-weight:800; color:var(--white); }
+.ai-card.pos .ai-card-head { border-left:3px solid var(--accent); }
+.ai-card.neg .ai-card-head { border-left:3px solid var(--red); }
+
+.ai-list { list-style:none; padding:.5rem 0; }
+.ai-list li {
+  display:flex; align-items:flex-start; gap:.75rem;
+  padding:.7rem 1.8rem; border-bottom:1px solid var(--border);
+  font-size:.86rem; color:rgba(238,240,250,.78); line-height:1.5; transition:background .15s;
+}
+.ai-list li:last-child { border-bottom:none; }
+.ai-list li:hover { background:var(--panel); }
+.ai-list .li-dot { width:5px; height:5px; border-radius:50%; margin-top:.55rem; flex-shrink:0; }
+.ai-card.pos .li-dot { background:var(--accent); }
+.ai-card.neg .li-dot { background:var(--red); }
+
+.ai-statement {
+  margin-top:1.5rem; background:var(--bg);
+  border:1px solid rgba(79,142,247,.2); border-radius:var(--r); padding:2rem 2.2rem;
+}
+.ai-statement p { font-family:var(--font-head); font-size:.95rem; font-weight:500; color:rgba(238,240,250,.85); line-height:1.75; margin-bottom:1rem; }
+.ai-statement p:last-of-type { margin-bottom:0; }
+.ai-sig { margin-top:1.2rem; font-family:var(--font-head); font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
+
+/* ══════════════════════════════════════════════════════════════════
+   CONTACT
+   ══════════════════════════════════════════════════════════════════ */
+#contact { background:var(--bg); }
+.contact-inner { max-width:580px; }
+
+.contact-discord-card {
+  display:flex; align-items:center; gap:1.4rem;
+  background:var(--bg2); border:1px solid var(--border);
+  border-radius:var(--r); padding:2rem 2.2rem; margin-top:2rem;
+  position:relative; overflow:hidden; transition:border-color .25s,box-shadow .25s;
+}
+.contact-discord-card::before {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(135deg,rgba(88,101,242,.08),transparent); pointer-events:none;
+}
+.contact-discord-card:hover { border-color:rgba(88,101,242,.4); box-shadow:0 0 30px rgba(88,101,242,.08); }
+
+.contact-discord-icon {
+  width:58px; height:58px; border-radius:12px;
+  background:rgba(88,101,242,.15); border:1px solid rgba(88,101,242,.3);
+  display:flex; align-items:center; justify-content:center; font-size:1.7rem; flex-shrink:0;
+}
+
+/* [EDIT: DISCORD] */
+.contact-discord-label { font-family:var(--font-head); font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:.25rem; }
+.contact-discord-username { font-family:var(--font-head); font-size:1.4rem; font-weight:800; color:var(--white); letter-spacing:.02em; margin-bottom:.2rem; }
+.contact-discord-note { font-size:.82rem; color:var(--muted); }
+
+.contact-extra {
+  margin-top:1.5rem; background:var(--panel);
+  border:1px solid var(--border); border-radius:8px; padding:1.2rem 1.5rem;
+  font-size:.87rem; color:var(--muted); line-height:1.6;
+}
+.contact-extra strong { color:var(--white); }
+.roblox-link { color:var(--accent); text-decoration:none; font-weight:600; transition:color .2s; }
+.roblox-link:hover { color:#fff; }
+
+/* ══════════════════════════════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════════════════════════════ */
+footer {
+  position:relative; z-index:1; border-top:1px solid var(--border);
+  padding:1.8rem 2.5rem; display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:1rem; background:var(--bg);
+}
+/* [EDIT: NAME] */
+.foot-logo { font-family:var(--font-logo); font-size:.85rem; font-weight:900; letter-spacing:.08em; color:var(--white); text-decoration:none; }
+.foot-logo span { color:var(--accent); }
+footer p { font-size:.76rem; color:var(--muted); }
+.foot-links { display:flex; gap:1.2rem; }
+.foot-links a { font-family:var(--font-head); font-size:.72rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color .2s; }
+.foot-links a:hover { color:var(--accent); }
+
+/* ══════════════════════════════════════════════════════════════════
+   RESPONSIVE / MOBILE
+   ══════════════════════════════════════════════════════════════════ */
+@media(max-width:960px){
+  .about-grid,.services-layout,.ai-grid,.skills-layout{ grid-template-columns:1fr; gap:2.5rem; }
+  .rates-panel{ position:static; }
+}
+@media(max-width:768px){
+  nav { padding:0 1.2rem; }
+  .nav-links { display:none; }
+  .nav-burger { display:flex; }
+  section { padding:70px 0; }
+  .hero-content { padding:0 1.2rem 3rem; margin-top:0; }
+  .hero-banner { height:16vh; min-height:80px; }
+  .hero-stats { gap:1.5rem; }
+  .games-grid,.videos-grid { grid-template-columns:1fr; }
+  .screenshots-grid { grid-template-columns:1fr 1fr; }
+  .container { padding:0 1.2rem; }
+  .contact-discord-card { flex-direction:column; align-items:flex-start; gap:1rem; }
+  footer { flex-direction:column; align-items:flex-start; }
+  .studios-grid { grid-template-columns:1fr; }
+  .video-modal,.img-lightbox { padding:.75rem; }
+  .ai-statement { padding:1.5rem; }
+}
+@media(max-width:480px){
+  .hero-btns { flex-direction:column; }
+  .btn-primary,.btn-ghost { text-align:center; }
+  .screenshots-grid { grid-template-columns:1fr; }
+  h2.section-title { font-size:1.65rem; }
+  .hours-row { grid-template-columns:110px 1fr; }
+}
+@media(hover:none){
+  .game-card:hover,.video-card:hover,.studio-card:hover,.screenshot-item:hover { transform:none; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Scroll progress bar -->
+<div id="scroll-bar"></div>
+
+<!-- Floating particles background -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- ── VIDEO MODAL ────────────────────────────────────────────── -->
+<div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-label="Video Player">
+  <div class="video-modal-inner">
+    <div class="video-modal-bar">
+      <span class="video-modal-title" id="videoModalTitle">Video</span>
+      <button class="video-modal-close" id="videoModalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="video-modal-player">
+      <video id="modalVideo" controls playsinline preload="none">
+        Your browser doesn't support HTML5 video.
+      </video>
+      <div class="video-no-src" id="videoNoSrc">
+        <div class="no-src-icon">🎬</div>
+        <span>Set data-src="your-video.mp4" on the video card in the HTML</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── IMAGE LIGHTBOX ────────────────────────────────────────── -->
+<div class="img-lightbox" id="imgLightbox" role="dialog" aria-modal="true" aria-label="Code screenshot">
+  <button class="img-lightbox-close" id="imgLightboxClose" aria-label="Close">✕</button>
+  <img id="lightboxImg" src="" alt="Code screenshot">
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     NAVIGATION
+     ════════════════════════════════════════════════════════════ -->
+<nav id="main-nav">
+  <!-- [EDIT: NAME] -->
+  <a class="nav-logo" href="#hero">C<span>ONNECTED</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#games">Games</a></li>
+    <li><a href="#studios">Studios</a></li>
+    <li><a href="#videos">Videos</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#ai">AI</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-burger" id="navBurger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile drop-down -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about"   onclick="closeMobileMenu()">About</a>
+  <a href="#skills"  onclick="closeMobileMenu()">Skills</a>
+  <a href="#games"   onclick="closeMobileMenu()">Games</a>
+  <a href="#studios" onclick="closeMobileMenu()">Studios</a>
+  <a href="#videos"  onclick="closeMobileMenu()">Videos</a>
+  <a href="#services" onclick="closeMobileMenu()">Services</a>
+  <a href="#ai"      onclick="closeMobileMenu()">AI</a>
+  <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════════════════ -->
+<section id="hero">
+
+  <!-- [EDIT: BANNER] — replace src with your banner image URL -->
+  <div class="hero-banner">
+    <img
+      src="https://connectedportfolio.carrd.co/assets/images/image08.jpg?v=46777c91"
+      alt="Connected banner"
+      loading="eager"
+    >
+    <div class="hero-banner-overlay"></div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-status">
+        <span class="status-dot"></span>
+        Available for commissions
+      </div>
+
+      <!-- [EDIT: NAME] -->
+      <h1 class="hero-name">
+        <span class="line1">Alex</span>
+      </h1>
+
+      <p class="hero-role">Roblox Developer &amp; Scripter</p>
+
+      <p class="hero-tagline">
+        Building <strong>polished game systems</strong> for Roblox.
+        Five years of scripting experience with clean code, fast delivery, AND NO NONESENSE.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#games" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+
+      <!-- [EDIT: STATS] — change data-count to update the animated numbers -->
+      <div class="hero-stats">
+        <div>
+          <span class="hero-stat-val" data-count="5" data-suffix="+">0</span>
+          <span class="hero-stat-lab">Years Scripting</span>
+        </div>
+        <div>
+          <span class="hero-stat-val" data-count="7" data-suffix="+">0</span>
+          <span class="hero-stat-lab">Projects Shipped</span>
+        </div>
+        <div>
+          <span class="hero-stat-val" data-count="12" data-suffix="">0</span>
+          <span class="hero-stat-lab">System Specialties</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     ABOUT
+     ════════════════════════════════════════════════════════════ -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- Card -->
+      <div class="reveal from-left">
+        <div class="about-card-wrap">
+          <div class="about-card">
+            <!--
+              [EDIT: AVATAR]
+              To add your avatar image, replace the <span>AVATAR</span>
+              with: <img src="YOUR_AVATAR_URL" alt="Connected avatar">
+            -->
+            <div class="about-avatar">
+              <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-78ED8F5A565D3137D608F0F090C97E8C-Png/150/150/AvatarHeadshot/Webp/noFilter">
+            </div>
+            <!-- [EDIT: NAME] -->
+            <div class="about-card-name">Connected</div>
+            <span class="about-card-role">Roblox Scripter — 5 Years</span>
+            <div class="about-tags">
+              <span class="tag">Luau</span>
+              <span class="tag">OOP / Modular</span>
+              <span class="tag">Game Systems</span>
+              <span class="tag gold">⚡ Fast Delivery</span>
+              <span class="tag gold">Open to Work</span>
+              <span class="tag neutral">ProfileService</span>
+              <span class="tag neutral">Rojo (on request)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="about-body reveal from-right">
+        <div class="section-label">About Me</div>
+        <h2 class="section-title">5 years of building<br><em>systems that work</em></h2>
+
+        <!-- [EDIT: ABOUT TEXT] — change these paragraphs to your own words -->
+        <p>
+          Hey, I'm <strong>Alex</strong>, a Roblox scripter with 5 years of hands-on experience.
+          I specialise in building solid & well-structured game systems using
+          <strong>object oriented, modular architecture</strong> (though I can adapt to other structures).
+          My code is clean, readable, and written with scalability in mind. If the project begs it, I WILL add <strong>detailed comments 
+          to the code.</strong>
+        </p>
+        <p>
+          I have contributed to a variety of projects; tycoons, simulators, RPGs, building games, survival games, etc. 
+          I can easily adapt to your project, since I have worked with several types of clients. If you don't prefer
+          a modular architecture, I can do that as well.
+        </p>
+        <p>
+          I work fast. I communicate consistently. I'm familiar with
+          <strong>ProfileService</strong> and other community modules, and I can also work
+          with <strong>Rojo</strong> if that's what your workflow requires, though for my own
+          work I don't necessarily find it to align with my ideal flow.
+        </p>
+        <p>
+          I do prefer COMMISSIONS over full games, because I typically don't like to spend too much time on one project. 
+          Hence, I'm not necessarily open for long-term work, but if you really want to you can review my prices and make
+          an offer.
+        </p>
+
+        <div class="about-highlights stagger">
+          <div class="about-hl"><span class="hl-icon">🏗️</span><span>Strongly prefers <strong>OOP / modular architecture</strong></span></div>
+          <div class="about-hl"><span class="hl-icon">⚡</span><span><strong>Works fast</strong> — I don't drag things out</span></div>
+          <div class="about-hl"><span class="hl-icon">🔌</span><span>Familiar with <strong>ProfileService</strong> and other community modules</span></div>
+          <div class="about-hl"><span class="hl-icon">🔧</span><span>Can work with <strong>Rojo</strong> on request</span></div>
+          <div class="about-hl"><span class="hl-icon">🎯</span><span><strong>Commissions preferred</strong> over full-game scope</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SKILLS
+     ════════════════════════════════════════════════════════════ -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">Capabilities</div>
+    <h2 class="section-title reveal">What I Can <em>Build</em></h2>
+    <p class="section-desc reveal">
+      A breakdown of what I'm experienced with, and where I have less mileage.
+      The weaknesses list doesn't mean I'll refuse the work, it just means I'll move slightly slower on those.
+    </p>
+
+    <div class="skills-layout stagger">
+
+      <!-- Strengths -->
+      <!-- [EDIT: SKILLS] — add/remove <li> items to update the list -->
+      <div class="skills-panel">
+        <div class="skills-panel-head str">
+          <div class="ph-icon">✅</div>
+          <div>
+            <h3>Strong At</h3>
+            <p>Systems I am experienced with</p>
+          </div>
+        </div>
+        <ul class="skills-list strengths">
+          <li><span class="s-dot"></span>Scripting UI: ScreenGui, animated menus, custom components</li>
+          <li><span class="s-dot"></span>Basic AntiCheats: server-side validation, exploit detection</li>
+          <li><span class="s-dot"></span>Combat Systems: hitboxes, combos, server-authoritative</li>
+          <li><span class="s-dot"></span>Projectiles: physics-based, raycasting, custom trajectories</li>
+          <li><span class="s-dot"></span>Movement Systems: standard and moderately custom locomotion</li>
+          <li><span class="s-dot"></span>Placement Systems: moderately complex object placement</li>
+          <li><span class="s-dot"></span>Tycoons: full loops, upgrade paths, conveyor logic</li>
+          <li><span class="s-dot"></span>Simulator Mechanics: collection, stat loops, world scaling</li>
+          <li><span class="s-dot"></span>Abilities: cooldowns, stacking, visual effect integration</li>
+          <li><span class="s-dot"></span>Incrementals: idle economy and progression logic</li>
+          <li><span class="s-dot"></span>Pet Systems: following AI, rarity buffs, storage vaults</li>
+          <li><span class="s-dot"></span>Camera Systems: cutscenes, perspectives, lerp rigs</li>
+        </ul>
+      </div>
+
+      <!-- Weaknesses -->
+      <div class="skills-panel">
+        <div class="skills-panel-head wk">
+          <div class="ph-icon">⚠️</div>
+          <div>
+            <h3>Less Experienced With</h3>
+            <p>Can still do these — just takes a bit longer</p>
+          </div>
+        </div>
+        <ul class="skills-list weaknesses">
+          <li><span class="s-dot"></span>Vehicle Systems: drivetrains, setting up chassis, suspension physics, handling tuning</li>
+          <li><span class="s-dot"></span>Complex Movement: polished flying mechanics, realistic locomotion feel, advanced character controllers</li>
+        </ul>
+        <div class="skills-weak-note">
+          <strong>Important:</strong> I won't refuse these tasks — I just have less experience here, which means more iteration time. I'll always be upfront if something is pushing the edges of what I know well.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     GAMES
+     ════════════════════════════════════════════════════════════ -->
+<section id="games">
+  <div class="container">
+    <div class="section-label">Portfolio</div>
+    <h2 class="section-title reveal">Games I've <em>Worked On</em></h2>
+    <p class="section-desc reveal">Not all, but a selection of projects I've contributed to.</p>
+
+    <div class="games-grid stagger">
+
+      <!--
+        [EDIT: GAME CARD] — HOW TO EDIT EACH CARD:
+        • Change the h3 title
+        • Change the <p> description
+        • Change .game-role-badge text to your actual role
+        • Change .game-meta-item values with real stats
+        • Add a real thumbnail: put <img src="thumb.jpg"> inside .game-thumb (the .game-thumb-ph hides)
+        • Update the href on .game-link-btn to the actual Roblox game URL
+        • To add more games: copy the entire .game-card block and paste it
+      -->
+      <div class="game-card">
+  <div class="game-thumb">
+    <img src="https://tr.rbxcdn.com/180DAY-fb1d2f7087d1012032081351a7f3bd7e/768/432/Image/Webp/noFilter" alt="Long Way Home thumbnail">
+    <span class="game-role-badge">Lead Scripter</span>
+    <div class="game-overlay"><a href="https://www.roblox.com/games/108361841378485/Long-Way-Home" class="game-link-btn" target="_blank" rel="noopener">View on Roblox →</a></div>
+  </div>
+  <div class="game-info">
+    <h3>Long Way Home</h3>
+    <p>Procedurally Generated survival game inspired by Dead Rails. Has sword combat, crossbow/projectile systems, animals, crafting, and much more.</p>
+    <div class="game-meta">
+      <div class="game-meta-item">👁 <span>360k+</span> Visits</div>
+      <div class="game-meta-item">⭐ <span>76%</span> Rating</div>
+    </div>
+  </div>
+</div>
+
+      <!-- [EDIT: GAME CARD] -->
+      <div class="game-card">
+        <div class="game-thumb">
+          <img src="https://tr.rbxcdn.com/180DAY-31b1b1a4ab56f2786670e0f480c7af36/768/432/Image/Webp/noFilter" alt="FLEE FROM MONKEYS thumbnail">
+          
+          <span class="game-role-badge">Scripter</span>
+          <div class="game-overlay"><a href="https://www.roblox.com/games/110559526331806/FLEE-FROM-MONKEYS" class="game-link-btn" target="_blank" rel="noopener">View on Roblox →</a></div>
+        </div>
+        <div class="game-info">
+          <h3>Flee From Monkeys</h3>
+          <p>A scary maze run game where you collect items while an antagonist monkey is running around the map chasing you. Currency systems, kit logic, etc.</p>
+          <div class="game-meta">
+            <div class="game-meta-item">👁 <span>2.2M+</span> Visits</div>
+            <div class="game-meta-item">⭐ <span>82%</span> Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- [EDIT: GAME CARD] -->
+      <div class="game-card">
+        <div class="game-thumb">
+          <img src="https://tr.rbxcdn.com/180DAY-2d13ccc490ff22bef4c05379960ccc94/768/432/Image/Webp/noFilter" alt="Donation Quest Thumbnail">
+         
+          <span class="game-role-badge">Scripter</span>
+          <div class="game-overlay"><a href="https://www.roblox.com/games/94518523809261/Donation-Quest" class="game-link-btn" target="_blank" rel="noopener">VIEW ON ROBLOX →</a></div>
+        </div>
+        <div class="game-info">
+          <h3>Donation Quest</h3>
+          <p>Donation game with unique special effects, stage system, clean UI, etc.</p>
+          <div class="game-meta">
+            <div class="game-meta-item">👁 <span>700k+</span> Visits</div>
+            <div class="game-meta-item">⭐ <span>90%</span> Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- [EDIT: GAME CARD] -->
+      <div class="game-card">
+        <div class="game-thumb">
+          <img src="https://tr.rbxcdn.com/180DAY-3027e6e558a5e3b2c065b73d3047917e/768/432/Image/Webp/noFilter" alt="Tied Trails Thumbnail">
+          <span class="game-role-badge">Co-Owner</span>
+          <div class="game-overlay"><a href="https://www.roblox.com/games/137083242844587/TIED-TRAILS" class="game-link-btn" target="_blank" rel="noopener">View on Roblox →</a></div>
+        </div>
+        <div class="game-info">
+          <h3>TIED TRAILS</h3>
+          <p>An obby game involving a player strapped to a box. They use the box to navigate obstacles.</p>
+          <div class="game-meta">
+            <div class="game-meta-item">👁 <span>1.4M+</span> Visits</div>
+            <div class="game-meta-item">❤️ <span>200k</span> Favorites</div>
+            <div class="game-meta-item">⭐ <span>91%</span> Rating</div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- [EDIT: GAME CARD] -->
+      <div class="game-card">
+        <div class="game-thumb">
+          <img src="https://tr.rbxcdn.com/180DAY-6c76da9f51dffc6ca174dd94ab5688d2/768/432/Image/Webp/noFilter" alt="Tied Trails Thumbnail">
+          <span class="game-role-badge">Scripter</span>
+          <div class="game-overlay"><a href="https://www.roblox.com/games/18295911602/NC-RPG" class="game-link-btn" target="_blank" rel="noopener">View on Roblox →</a></div>
+        </div>
+        <div class="game-info">
+          <h3>NC RPG</h3>
+          <p>Open world high quality adventure game with inventory system, combat mechanics, VFX, looting, etc.</p>
+          <div class="game-meta">
+            <div class="game-meta-item">📦 <span>Not Finished</span></div>
+            <div class="game-meta-item">🗓 <span>Started 2024</span></div>
+          </div>
+        </div>
+      </div>
+
+     
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     STUDIOS
+     ════════════════════════════════════════════════════════════ -->
+<section id="studios">
+  <div class="container">
+    <div class="section-label">Experience</div>
+    <h2 class="section-title reveal">Studios I've <em>Worked With</em></h2>
+    <p class="section-desc reveal">Groups and studios I've worked for or alongside professionally.</p>
+
+    <div class="studios-grid stagger">
+
+      <!--
+        [EDIT: STUDIO CARD] — HOW TO EDIT:
+        • Change .studio-name, .studio-role, .studio-desc
+        • Update href to the real Roblox group URL
+        • Change the emoji in .studio-logo
+        • To add more studios: copy the whole .studio-card block
+      -->
+      <a class="studio-card" href="https://www.roblox.com/communities/34541080/Xenware-Studios#!/about" target="_blank" rel="noopener">
+        <div class="studio-logo">
+          <img src="https://tr.rbxcdn.com/180DAY-318152c2de131f2fbb3ac9e549bfa706/150/150/Image/Webp/noFilter">
+        </div>
+        <div class="studio-name">Xenware Studios</div>
+        <div class="studio-role">Lead Scripter/Project Manager</div>
+        <p class="studio-desc">I've been a part of Xenware Studios for around a year and a half now, contributing to nearly all of it's experiences.</p>
+        <div class="studio-link-label">
+          View Group
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+      </a>
+
+      <!-- [EDIT: STUDIO CARD] -->
+      <a class="studio-card" href="https://www.roblox.com/communities/34036396/ANCHOR-STUDlOS#!/about" target="_blank" rel="noopener">
+        <div class="studio-logo">
+          <img src="https://tr.rbxcdn.com/180DAY-4a1edd1cb772ba2f64e2eeab34581782/150/150/Image/Webp/noFilter">
+        </div>
+        <div class="studio-name">ANCHOR STUDIOS</div>
+        <div class="studio-role">"Creator" Role</div>
+        <p class="studio-desc">I co owned this studio (essentially), contributing heavily to its only game.</p>
+        <div class="studio-link-label">
+          View Group
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+      </a>
+
+      <a class="studio-card" href="https://www.roblox.com/communities/14028405/Sonic-Team-Productions#!/about" target="_blank" rel="noopener">
+        <div class="studio-logo">
+          <img src="https://tr.rbxcdn.com/180DAY-1278c20c5b8ac0580fcd8c535721d031/150/150/Image/Webp/noFilter">
+        </div>
+        <div class="studio-name">S Team Productions</div>
+        <div class="studio-role">Helper/Scripter</div>
+        <p class="studio-desc">I only did a few silly commissions for this studio.</p>
+        <div class="studio-link-label">
+          View Group
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     VIDEOS
+     ════════════════════════════════════════════════════════════ -->
+<section id="videos">
+  <div class="container">
+    <div class="section-label">Showcase</div>
+    <h2 class="section-title reveal">Work in <em>Motion</em></h2>
+    <p class="section-desc reveal">Demonstrations of my work.</p>
+
+    <div class="video-filters reveal">
+      <button class="vf-btn active" data-filter="all">All</button>
+      
+    </div>
+
+    <div class="videos-grid stagger" id="videoGrid">
+
+      <!--
+        [EDIT: VIDEO CARD] — HOW TO ADD YOUR VIDEOS:
+        1. Set data-src="videos/your-file.mp4" (path relative to this HTML file)
+        2. Set data-title to the video title
+        3. Set data-cat to one of: commission | system | ui | combat
+        4. Optionally add a thumbnail: <img src="thumb.jpg"> inside .video-thumb
+        5. To add more videos: copy a whole .video-card block and paste it
+      -->
+
+      <div class="video-card" data-src="SwordCombat.mov" data-title="Full Inventory System" data-cat="commission">
+        <div class="video-thumb">
+          <div class="video-thumb-ph"><div class="ph-emoji">📦</div><div class="ph-label">Click to Watch</div></div>
+          <div class="video-thumb-overlay"></div>
+          <div class="video-play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-cat">Commission</div>
+          <h3>Sword Combat System</h3>
+          <p>Straightforward sword combat supporting hitboxes and customizable.</p>
+        </div>
+      </div>
+
+      <!-- [EDIT: VIDEO CARD] -->
+      <div class="video-card" data-src="HorsePortfolio.mov" data-title="Horse System" data-cat="system">
+        <div class="video-thumb">
+          <div class="video-thumb-ph"><div class="ph-emoji">⚔️</div><div class="ph-label">Click to Watch</div></div>
+          <div class="video-thumb-overlay"></div>
+          <div class="video-play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-cat">System</div>
+          <h3>Horse Movement System</h3>
+          <p>Move as a horse - includes smoothing, efficient method to adjust horse height to topography, etc.</p>
+        </div>
+      </div>
+
+      <!-- [EDIT: VIDEO CARD] -->
+      <div class="video-card" data-src="FishingPortfolio.mov" data-title="Fishing System" data-cat="system">
+        <div class="video-thumb">
+          <div class="video-thumb-ph"><div class="ph-emoji">🖥️</div><div class="ph-label">Click to Watch</div></div>
+          <div class="video-thumb-overlay"></div>
+          <div class="video-play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-cat">System</div>
+          <h3>Fishing System</h3>
+          <p>Fishing with rolling mechanism, FastCast for projectile, VFX manipulation, etc.</p>
+        </div>
+      </div>
+      <div class="video-card" data-src="TotemAndCombatPortfolio.mov" data-title="Structure Activation & Combat Showcase" data-cat="combat">
+        <div class="video-thumb">
+          <div class="video-thumb-ph"><div class="ph-emoji">🖥️</div><div class="ph-label">Click to Watch</div></div>
+          <div class="video-thumb-overlay"></div>
+          <div class="video-play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-cat">Combat</div>
+          <h3>Structure Activation & Combat Showcase</h3>
+          <p>In the video you will see a neat little totem structure activation, spawning enemies around you which shows the sword combat.</p>
+        </div>
+      </div>
+      <div class="video-card" data-src="PlacementPortfolio.mov" data-title="Placement System" data-cat="system">
+        <div class="video-thumb">
+          <div class="video-thumb-ph"><div class="ph-emoji">🖥️</div><div class="ph-label">Click to Watch</div></div>
+          <div class="video-thumb-overlay"></div>
+          <div class="video-play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-cat">System</div>
+          <h3>Placement System</h3>
+          <p>The video shows a decent placement system with model support.</p>
+        </div>
+      </div>
+
+      <div class="video-card" data-src="DashPortfolio.mov" data-title="Dash System" data-cat="system">
+        <div class="video-thumb">
+          <div class="video-thumb-ph"><div class="ph-emoji">🖥️</div><div class="ph-label">Click to Watch</div></div>
+          <div class="video-thumb-overlay"></div>
+          <div class="video-play-ring"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
+        <div class="video-info">
+          <div class="video-cat">System</div>
+          <h3>Dash</h3>
+          <p>The video shows a dash ability (Q)</p>
+        </div>
+      </div>
+
+
+    
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     SERVICES
+     ════════════════════════════════════════════════════════════ -->
+<section id="services">
+  <div class="container">
+    <div class="section-label">Work With Me</div>
+    <h2 class="section-title reveal">Rates, Hours &amp;<br><em>Important Details</em></h2>
+
+    <div class="services-layout">
+
+      <!-- Left: Availability + Notices -->
+      <div>
+        <p class="services-sub reveal">Availability</p>
+
+        <!-- [EDIT: AVAILABILITY] — change the time text in each .hours-time -->
+        <div class="hours-table reveal">
+          <div class="hours-row open"><div class="hours-day">Monday</div><div class="hours-time">5:30 PM – 11:00 PM</div></div>
+          <div class="hours-row open"><div class="hours-day">Tuesday</div><div class="hours-time">5:30 PM – 11:00 PM</div></div>
+          <div class="hours-row open"><div class="hours-day">Wednesday</div><div class="hours-time">5:30 PM – 11:00 PM</div></div>
+          <div class="hours-row open"><div class="hours-day">Thursday</div><div class="hours-time">5:30 PM – 11:00 PM</div></div>
+          <div class="hours-row open"><div class="hours-day">Friday</div><div class="hours-time">5:30 PM – 11:00 PM</div></div>
+          <div class="hours-row open"><div class="hours-day">Saturday</div><div class="hours-time">11:00 AM – 3:00 PM &amp; 9:00 PM – 11:00 PM</div></div>
+          <div class="hours-row open"><div class="hours-day">Sunday</div><div class="hours-time">11:00 AM – 3:00 PM &amp; 9:00 PM – 11:00 PM</div></div>
+        </div>
+        <!-- [EDIT: AVAILABILITY] — change timezone if needed -->
+        <p class="hours-tz reveal">All times in <strong style="color:var(--white)">EST (Eastern Time, UTC−5).</strong> Hours are flexible and may shift — always confirm when you message me.</p>
+
+        <p class="services-sub reveal">Important Details</p>
+
+        <!-- [EDIT: NOTICES] -->
+        <div class="notice-list reveal">
+          <div class="notice accent">
+            <div class="notice-icon">💳</div>
+            <div class="notice-text">
+              <strong>Payment:</strong> PayPal (Friends &amp; Family) or Robux via group funds / game pass.
+              Standard split is <strong>50% upfront, 50% on delivery</strong>.
+            </div>
+          </div>
+          <div class="notice warn">
+            <div class="notice-icon">📋</div>
+            <div class="notice-text">
+              <strong>Have a clear brief ready.</strong> Vague requirements slow everything down and cost more.
+              I'm happy to help you structure your requirements before agreeing to anything.
+            </div>
+          </div>
+          <div class="notice warn">
+            <div class="notice-icon">⚠️</div>
+            <div class="notice-text">
+              <strong>No refunds after delivery.</strong> Revisions are included within reasonable scope.
+              If requirements change significantly mid-project, additional charges may apply.
+            </div>
+          </div>
+          <div class="notice danger">
+            <div class="notice-icon">🚫</div>
+            <div class="notice-text">
+              <strong>No free work.</strong> Exposure deals and rev-share only are not accepted unless the game has demonstrable, consistent existing revenue.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Rates panel -->
+      <div class="reveal from-right">
+        <div class="rates-panel">
+          <div class="rates-panel-head">
+            <h3>Commission Rates</h3>
+            <p>Always DM me before ordering to confirm scope</p>
+          </div>
+
+          <!-- [EDIT: RATES] — change .p-main and .p-robux for pricing -->
+          <div class="rate-row">
+            <div>
+              <div class="rate-name">Simple / Short Task</div>
+              <div class="rate-note">Single-purpose scripts, quick fixes</div>
+            </div>
+            <div class="rate-price">
+              <span class="p-main">$5 – $15</span>
+              <span class="p-robux">or 1,000 R$</span>
+            </div>
+          </div>
+
+          <div class="rate-row">
+            <div>
+              <div class="rate-name">Moderate Task</div>
+              <div class="rate-note">Systems, UI screens, mid-complexity work</div>
+            </div>
+            <div class="rate-price">
+              <span class="p-main">$20 – $40</span>
+              <span class="p-robux">or 5,000 – 10,000 R$</span>
+            </div>
+          </div>
+
+          <div class="rate-row">
+            <div>
+              <div class="rate-name">Complex Task</div>
+              <div class="rate-note">Large systems, frameworks, multi-part work</div>
+            </div>
+            <div class="rate-price">
+              <span class="p-main">$50 – $80</span>
+              <span class="p-robux">or 15,000 – 30,000 R$</span>
+            </div>
+          </div>
+
+          <div class="rate-row full-game">
+            <div>
+              <div class="rate-name">Full Game</div>
+              <div class="rate-note">End-to-end development</div>
+            </div>
+            <div class="rate-price">
+              <span class="p-main" style="color:var(--gold)">$200 – $400</span>
+              <span class="p-robux">or 100,000 R$</span>
+            </div>
+          </div>
+
+          <div class="rare-note">
+            <span>⚠️</span>
+            <span><strong>Full game commissions are very rarely accepted.</strong> I strongly prefer scoped work over full-game development. If your project is a full game, reach out before assuming I'll take it — there's a good chance I won't.</span>
+          </div>
+
+          <div class="rates-footer">
+            <strong>All prices are starting estimates.</strong> Final quotes depend on scope complexity, deadline, and brief clarity.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     AI USAGE
+     ════════════════════════════════════════════════════════════ -->
+<section id="ai">
+  <div class="container">
+    <div class="section-label">Transparency</div>
+    <h2 class="section-title reveal">AI <em>Usage</em></h2>
+    <p class="section-desc reveal">A clear, honest breakdown of when I would and wouldn't use AI tools in development.</p>
+
+    <div class="ai-grid">
+
+      <!-- When I Would NOT Use AI -->
+      <div class="ai-card neg reveal">
+        <div class="ai-card-head">
+          <div class="head-icon">🚫</div>
+          <h3>When I Would NOT Use AI</h3>
+        </div>
+        <ul class="ai-list">
+          <li><span class="li-dot"></span>The client does not approve of AI usage and wants completely raw, manual input.</li>
+          <li><span class="li-dot"></span>Most cases - if I deem the work to be too unscalable/requiring manual changes.</li>
+          
+        </ul>
+      </div>
+
+      <!-- When I Would Use AI -->
+      <div class="ai-card pos reveal">
+        <div class="ai-card-head">
+          <div class="head-icon">✅</div>
+          <h3>When I Would Use AI</h3>
+        </div>
+        <ul class="ai-list">
+          <li><span class="li-dot"></span>The client approves of some AI usage as long as it's not blind.</li>
+          <li><span class="li-dot"></span>Never prompting it to create the full finished product - at the very least there will ALWAYS be manual review..</li>
+          
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="ai-statement reveal">
+      <p>
+        By default, everything I ship is pretty much all by me. If you want me to use AI assistance for any reason including speed, cost reduction, or anything else, then that's a conversation we can have before the project starts. You'll always know exactly what you're getting.
+      </p>
+      <!-- [EDIT: NAME] -->
+      <div class="ai-sig">— Connected, Roblox Scripter</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════
+     CONTACT
+     ════════════════════════════════════════════════════════════ -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title reveal">Reach Out on <em>Discord</em></h2>
+
+    <div class="contact-inner">
+      <p style="color:var(--muted);font-size:.95rem;line-height:1.65;max-width:480px;" class="reveal">
+        The best way to contact me is through discord. 
+      </p>
+
+      <!-- [EDIT: DISCORD] — change the username text in .contact-discord-username -->
+      <div class="contact-discord-card reveal">
+        <div class="contact-discord-icon">💬</div>
+        <div>
+          <div class="contact-discord-label">My discord</div>
+          <!-- [EDIT: DISCORD] -->
+          <div class="contact-discord-username">connected0905</div>
+          <div class="contact-discord-note">I respond within 24 hours. Usually much faster.</div>
+        </div>
+      </div>
+
+      <!-- [EDIT: ROBLOX] — update the href to your actual Roblox profile URL -->
+      <div class="contact-extra reveal">
+        <strong>Curious about my profile?</strong> My Roblox username is
+        <a class="roblox-link" href="https://www.roblox.com/users/search?keyword=ConnectedNow" target="_blank" rel="noopener">ConnectedNow</a>
+        — you can find my portfolio games from my profile.
+        <br><br>
+        When messaging me, please include: <strong>what you need, your budget, and your deadline</strong>.
+        This lets me give you a faster and more accurate quote.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════════ -->
+<footer>
+  <!-- [EDIT: NAME] -->
+  <a class="foot-logo" href="#hero">C<span>ONNECTED</span></a>
+  <p>© 2025 Connected. Roblox Scripter.</p>
+  <div class="foot-links">
+    <a href="#about">About</a>
+    <a href="#games">Games</a>
+    <a href="#services">Rates</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ════════════════════════════════════════════════════════════ -->
+<script>
+
+/* ── SCROLL PROGRESS BAR ─────────────────────────────────────── */
+const scrollBar = document.getElementById('scroll-bar');
+window.addEventListener('scroll', () => {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+  scrollBar.style.width = Math.min(pct, 100) + '%';
+}, { passive: true });
+
+
+/* ── NAV: scroll background + active link ────────────────────── */
+const nav      = document.getElementById('main-nav');
+const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu a');
+
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+}, { passive: true });
+
+// Highlight the nav link that matches the current visible section
+const sections   = document.querySelectorAll('section[id]');
+const sectionObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.remove('active'));
+      document.querySelectorAll(`a[href="#${e.target.id}"]`)
+        .forEach(a => a.classList.add('active'));
+    }
+  });
+}, { threshold: 0.35 });
+sections.forEach(s => sectionObs.observe(s));
+
+
+/* ── MOBILE MENU ─────────────────────────────────────────────── */
+const burger     = document.getElementById('navBurger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+burger.addEventListener('click', () => {
+  const isOpen = mobileMenu.classList.toggle('open');
+  burger.classList.toggle('open', isOpen);
+});
+
+// Called by onclick on each mobile menu link
+function closeMobileMenu() {
+  mobileMenu.classList.remove('open');
+  burger.classList.remove('open');
+}
+
+
+/* ── FLOATING PARTICLES ──────────────────────────────────────── */
+(function () {
+  const canvas = document.getElementById('particle-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W = 0, H = 0, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  // Create one particle with random properties
+  function spawn() {
+    return {
+      x:     Math.random() * W,
+      y:     Math.random() * H,
+      r:     Math.random() * 1.1 + 0.3,
+      vx:    (Math.random() - 0.5) * 0.15,
+      vy:    -(Math.random() * 0.2 + 0.05),
+      life:  Math.random(),
+      speed: Math.random() * 0.003 + 0.001,
+      // Alternate between accent blue and gold
+      // [EDIT: COLORS] — change these hex values to match your --accent and --gold variables
+      color: Math.random() < 0.65 ? '#4f8ef7' : '#e8b84b'
+    };
+  }
+
+  for (let i = 0; i < 100; i++) particles.push(spawn());
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.life += p.speed;
+      if (p.life > 1) { p.life = 0; p.x = Math.random() * W; p.y = H + 5; }
+      p.x += p.vx;
+      p.y += p.vy;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle   = p.color;
+      ctx.globalAlpha = Math.sin(p.life * Math.PI) * 0.65;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+
+/* ── REVEAL ON SCROLL ────────────────────────────────────────── */
+// Elements with .reveal or .stagger animate in when they enter the viewport
+const revealEls = document.querySelectorAll('.reveal, .stagger');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObs.unobserve(e.target); // fire once only
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => revealObs.observe(el));
+
+
+/* ── COUNTER ANIMATION ───────────────────────────────────────── */
+// Animates the [data-count] numbers in the hero stats
+// [EDIT: STATS] — change data-count values directly in the HTML, not here
+function animateCounter(el) {
+  const target = +el.dataset.count;
+  const suffix = el.dataset.suffix || '';
+  const dur    = 1600;
+  const start  = performance.now();
+
+  function step(now) {
+    const t    = Math.min((now - start) / dur, 1);
+    const ease = 1 - Math.pow(1 - t, 4); // ease-out-quart
+    el.textContent = Math.round(ease * target) + (t === 1 ? suffix : '');
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+const statsObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('[data-count]').forEach(animateCounter);
+      statsObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('.hero-stats').forEach(el => statsObs.observe(el));
+
+
+/* ── GAME CARD 3D TILT (desktop only) ───────────────────────── */
+// Gives game cards a subtle 3D perspective tilt on hover
+// Automatically disabled on touch devices via the @media(hover:none) CSS rule
+if (window.matchMedia('(hover: hover)').matches) {
+  document.querySelectorAll('.game-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = `translateY(-7px) scale(1.005) rotateX(${-y * 5}deg) rotateY(${x * 5}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+}
+
+
+/* ── VIDEO CATEGORY FILTER ───────────────────────────────────── */
+// Filters the video grid by category when a filter button is clicked
+// [EDIT: VIDEO CARD] — the data-cat attribute on each .video-card controls which filter shows it
+document.querySelectorAll('.vf-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.vf-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.video-card').forEach(card => {
+      const show = filter === 'all' || card.dataset.cat === filter;
+      card.style.transition    = 'opacity 0.3s, transform 0.3s';
+      card.style.opacity       = show ? '1' : '0.2';
+      card.style.transform     = show ? '' : 'scale(0.95)';
+      card.style.pointerEvents = show ? '' : 'none';
+    });
+  });
+});
+
+
+/* ── VIDEO MODAL ─────────────────────────────────────────────── */
+// Opens a full-screen HTML5 video player when a .video-card is clicked
+// [EDIT: VIDEO CARD] — set data-src="your-video.mp4" on the card to wire up a video
+const videoModal      = document.getElementById('videoModal');
+const modalVideo      = document.getElementById('modalVideo');
+const videoNoSrc      = document.getElementById('videoNoSrc');
+const videoModalTitle = document.getElementById('videoModalTitle');
+const videoModalClose = document.getElementById('videoModalClose');
+
+document.querySelectorAll('.video-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const src   = card.dataset.src   || '';
+    const title = card.dataset.title || 'Video';
+
+    videoModalTitle.textContent = title;
+
+    if (src) {
+      // A video file path was set — show the player
+      modalVideo.src           = src;
+      modalVideo.style.display = 'block';
+      videoNoSrc.style.display = 'none';
+      modalVideo.load();
+    } else {
+      // No src set yet — show the helper message
+      modalVideo.src           = '';
+      modalVideo.style.display = 'none';
+      videoNoSrc.style.display = 'flex';
+    }
+
+    videoModal.classList.add('open');
+    document.body.style.overflow = 'hidden'; // stop background scrolling
+  });
+});
+
+function closeVideoModal() {
+  videoModal.classList.remove('open');
+  modalVideo.pause();
+  modalVideo.src               = '';
+  document.body.style.overflow = '';
+}
+
+videoModalClose.addEventListener('click', closeVideoModal);
+// Clicking the dark backdrop also closes the modal
+videoModal.addEventListener('click', e => {
+  if (e.target === videoModal) closeVideoModal();
+});
+
+
+/* ── IMAGE LIGHTBOX ──────────────────────────────────────────── */
+// Opens a full-screen lightbox when a .screenshot-item is clicked
+// [EDIT: SCREENSHOT] — set src="" on the .screenshot-img inside each .screenshot-item
+const imgLightbox      = document.getElementById('imgLightbox');
+const lightboxImg      = document.getElementById('lightboxImg');
+const imgLightboxClose = document.getElementById('imgLightboxClose');
+
+document.querySelectorAll('.screenshot-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const img = item.querySelector('.screenshot-img');
+    // Only open if the image has a valid src and has loaded
+    if (!img || !img.src || img.naturalWidth === 0) return;
+
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt || 'Code screenshot';
+    imgLightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeImgLightbox() {
+  imgLightbox.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+imgLightboxClose.addEventListener('click', closeImgLightbox);
+imgLightbox.addEventListener('click', e => {
+  if (e.target === imgLightbox) closeImgLightbox();
+});
+
+// Close either modal with Escape key
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeVideoModal(); closeImgLightbox(); }
+});
+
+
+/* ── SCREENSHOT PLACEHOLDER LOGIC ───────────────────────────── */
+// If a .screenshot-img has a valid src, hide the placeholder and show the image
+// If the image fails to load, fall back to the placeholder
+document.querySelectorAll('.screenshot-item').forEach(item => {
+  const img = item.querySelector('.screenshot-img');
+  const ph  = item.querySelector('.screenshot-ph');
+  if (!img || !ph) return;
+
+  // Check the src isn't empty or just the page URL
+  const hasSrc = img.getAttribute('src') && img.getAttribute('src').trim() !== '';
+  if (hasSrc) {
+    img.style.display = 'block';
+    ph.style.display  = 'none';
+    img.addEventListener('error', () => {
+      // Image URL is broken — fall back to placeholder
+      img.style.display = 'none';
+      ph.style.display  = 'flex';
+    });
+  }
+});
+
+</script>
+</body>
+</html>
